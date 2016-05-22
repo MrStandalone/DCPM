@@ -1,5 +1,8 @@
 #Jump Monitor
-Lets you know if you were too early or too late for a super jump
+Lets you know if you were too early or too late for a super jump.
 
 #Smooth Camera
-Gets rid of the annoying jitter/stutter/"framey lag" that plagues the game due to unity default physics timestep being 0.02 (50fps) and the camera updating position on physics time steps.
+Attempts to remove the camera jitter that is in DeadCore due to the Unity physics by detaching the camera and having it smoothly follow along.
+
+#NoSplash
+Removes the splash screens at the start of the game and loads the main menu straight away.
