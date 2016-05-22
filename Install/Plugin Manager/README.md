@@ -1,6 +1,6 @@
 #Installation
 
-To install the DeadCore Plugin Manager, simply copy the 3 dll's in this folder (DCPM.dll, DCPM.Common.dll and DCPM.PluginBase.dll) into your `DeadCore Install Directory/DeadCore_Data/Managed` and start the game.
+To install the DeadCore Plugin Manager, simply copy the 4 dll's in this folder (replacing the existing Assembly-CSharp.dll in the process, make a backup if you want to revert back to original) into your `DeadCore Install Directory/DeadCore_Data/Managed` and start the game.
 
 If all went well then you should hear a beep and when you press ~ an in game console should appear.
 
