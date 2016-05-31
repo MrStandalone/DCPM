@@ -1,1 +1,1 @@
-Nothing here just yet
+The source files located here may or may not be the exact same source used to build the latest install version, the reason for this is that the source folder will be (for the most part) a direct copy of the Visual Studio Project on my local machine which I'll be making small changes to often and testing new plugins that may or may not be released.
