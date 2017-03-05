@@ -21,8 +21,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnityMultiplayer", "UnityMu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LevelLoader", "LevelLoader\LevelLoader.csproj", "{F45992F9-71E9-44E8-9509-44913CF9F909}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GamepadSupport", "GamepadSupport\GamepadSupport.csproj", "{C907E4C0-4902-4BB8-BA52-E167FFFDD3EF}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FramerateSettings", "FramerateSettings\FramerateSettings.csproj", "{D7AC0650-98A0-45F6-BB3A-335F124E53ED}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmoothCamera", "SmoothCamera\SmoothCamera.csproj", "{2EA65AAA-AE02-4845-9F51-63580693EBDD}"
@@ -79,10 +77,6 @@ Global
 		{F45992F9-71E9-44E8-9509-44913CF9F909}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F45992F9-71E9-44E8-9509-44913CF9F909}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F45992F9-71E9-44E8-9509-44913CF9F909}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C907E4C0-4902-4BB8-BA52-E167FFFDD3EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C907E4C0-4902-4BB8-BA52-E167FFFDD3EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C907E4C0-4902-4BB8-BA52-E167FFFDD3EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C907E4C0-4902-4BB8-BA52-E167FFFDD3EF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D7AC0650-98A0-45F6-BB3A-335F124E53ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D7AC0650-98A0-45F6-BB3A-335F124E53ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D7AC0650-98A0-45F6-BB3A-335F124E53ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
