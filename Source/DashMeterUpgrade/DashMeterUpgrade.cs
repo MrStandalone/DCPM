@@ -104,14 +104,14 @@ public class DashMeterUpgrade : DeadCorePlugin
 		//If string array is not a 3 element array
 		else if (input.Length != 3)
 		{
-			PluginConsole.WriteLine("Command requires 3 color values separated by spaces eg: 'dash_wait_color 1 0 0' will set the color to red", this);
+			PluginConsole.WriteLine("Command requires 3 color values separated by spaces eg: 'dash_punish_color 1 0 0' will set the color to red", this);
 		}
 		//String array is in fact a 3 element array
 		else
 		{
 			var colorResult = StringArrayToColor(input);
 
-			_waitColor = colorResult.color;
+			_punishColor = colorResult.color;
 
 			if (colorResult.HadConversionError)
 			{
@@ -119,7 +119,7 @@ public class DashMeterUpgrade : DeadCorePlugin
 			}
 			else
 			{
-				PluginSettings.Instance.SetSetting("dash_wait_color", string.Join(" ", input));
+				PluginSettings.Instance.SetSetting("dash_punish_color", string.Join(" ", input));
 			}
 		}
 	}
@@ -178,9 +178,9 @@ public class DashMeterUpgrade : DeadCorePlugin
 		enabled = false;
 
 		//Register Console Commands
-		PluginConsole.RegisterConsoleCommand("dash_charged_color", Cmd_SetChargedColor, "Set the Charged color of the Dash interface on the gun, eg: 'set_dash_charged_color 1 0 0'", this);
-		PluginConsole.RegisterConsoleCommand("dash_wait_color", Cmd_SetWaitColor, "Set the Waiting color of the Dash interface on the gun", this);
-		PluginConsole.RegisterConsoleCommand("dash_punish_color", Cmd_SetPunishmentColor, "Set the Punishment color of the Dash interface on the gun", this);
+		PluginConsole.RegisterConsoleCommand("dash_charged_color", Cmd_SetChargedColor, "Set the Charged color of the Dash interface on the gun, used with no arguments will show the current color", this);
+		PluginConsole.RegisterConsoleCommand("dash_wait_color", Cmd_SetWaitColor, "Set the Waiting color of the Dash interface on the gun, used with no arguments will show the current color", this);
+		PluginConsole.RegisterConsoleCommand("dash_punish_color", Cmd_SetPunishmentColor, "Set the Punishment color of the Dash interface on the gun, used with no arguments will show the current color", this);
 
 		//Check Settings file for Colors
 		_chargedColor = StringArrayToColor(PluginSettings.Instance.GetSetting("dash_charged_color", "0 1 0").Split(' ')).color;
