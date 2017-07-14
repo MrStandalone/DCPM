@@ -15,84 +15,160 @@ public class DashMeterUpgrade : DeadCorePlugin
 	#endregion IPluginInfo
 
 	#region DataMembers
-	AndroidBattery _battery;
-	AndroidDash _dash;
+	AndroidBattery _battery
+	{
+		get
+		{
+			return Android.Instance.GetComponent<AndroidBattery>();
+		}
+	}
+	AndroidDash _dash
+	{
+		get
+		{
+			return Android.Instance.GetComponent<AndroidDash>();
+		}
+	}
 
-	Color _chargedColor, _waitColor, _punishmentColor, _selectedColor;
+	Color _chargedColor, _waitColor, _punishColor;
 	#endregion DataMembers
 
 	#region Console Commands
 	void Cmd_SetChargedColor(string[] input)
 	{
-		if (ResolveColor(input))
+		//No args supplied, display current value
+		if (input.Length == 0)
 		{
-			_chargedColor = _selectedColor;
+			PluginConsole.WriteLine(string.Format("Charged color = R:{0} G:{1} B:{2}", _chargedColor.r, _chargedColor.g, _chargedColor.b), this);
+		}
+		//If string array is not a 3 element array
+		else if (input.Length != 3)
+		{
+			PluginConsole.WriteLine("Command requires 3 color values separated by spaces eg: 'dash_charged_color 1 0 0' will set the color to red", this);
+		}
+		//String array is in fact a 3 element array
+		else
+		{
+			var colorResult = StringArrayToColor(input);
 
-			PluginSettings.Instance.SetSetting("dash_charged_r", _selectedColor.r);
-			PluginSettings.Instance.SetSetting("dash_charged_g", _selectedColor.g);
-			PluginSettings.Instance.SetSetting("dash_charged_b", _selectedColor.b);
+			_chargedColor = colorResult.color;
 
-			PluginConsole.WriteLine("Charged Color Changed", this);
+			if (colorResult.HadConversionError)
+			{
+				PluginConsole.WriteLine("A conversion error occurred during this command and as such the color value was not assigned to the settings file", this);
+			}
+			else
+			{
+				PluginSettings.Instance.SetSetting("dash_charged_color", string.Join(" ", input));
+			}
 		}
 	}
 
 	void Cmd_SetWaitColor(string[] input)
 	{
-		if (ResolveColor(input))
+		//No args supplied, display current value
+		if (input.Length == 0)
 		{
-			_waitColor = _selectedColor;
+			PluginConsole.WriteLine(string.Format("Wait color = R:{0} G:{1} B:{2}", _waitColor.r, _waitColor.g, _waitColor.b), this);
+		}
+		//If string array is not a 3 element array
+		else if (input.Length != 3)
+		{
+			PluginConsole.WriteLine("Command requires 3 color values separated by spaces eg: 'dash_wait_color 1 0 0' will set the color to red", this);
+		}
+		//String array is in fact a 3 element array
+		else
+		{
+			var colorResult = StringArrayToColor(input);
 
-			PluginSettings.Instance.SetSetting("dash_wait_r", _selectedColor.r);
-			PluginSettings.Instance.SetSetting("dash_wait_g", _selectedColor.g);
-			PluginSettings.Instance.SetSetting("dash_wait_b", _selectedColor.b);
+			_waitColor = colorResult.color;
 
-			PluginConsole.WriteLine("Wait Color Changed", this);
+			if (colorResult.HadConversionError)
+			{
+				PluginConsole.WriteLine("A conversion error occurred during this command and as such the color value was not assigned to the settings file", this);
+			}
+			else
+			{
+				PluginSettings.Instance.SetSetting("dash_wait_color", string.Join(" ", input));
+			}
 		}
 	}
 
 	void Cmd_SetPunishmentColor(string[] input)
 	{
-		if (ResolveColor(input))
+		//No args supplied, display current value
+		if (input.Length == 0)
 		{
-			_punishmentColor = _selectedColor;
+			PluginConsole.WriteLine(string.Format("Punish color = R:{0} G:{1} B:{2}", _punishColor.r, _punishColor.g, _punishColor.b), this);
+		}
+		//If string array is not a 3 element array
+		else if (input.Length != 3)
+		{
+			PluginConsole.WriteLine("Command requires 3 color values separated by spaces eg: 'dash_wait_color 1 0 0' will set the color to red", this);
+		}
+		//String array is in fact a 3 element array
+		else
+		{
+			var colorResult = StringArrayToColor(input);
 
-			PluginSettings.Instance.SetSetting("dash_punish_r", _selectedColor.r);
-			PluginSettings.Instance.SetSetting("dash_punish_g", _selectedColor.g);
-			PluginSettings.Instance.SetSetting("dash_punish_b", _selectedColor.b);
+			_waitColor = colorResult.color;
 
-			PluginConsole.WriteLine("Punishment Color Changed", this);
+			if (colorResult.HadConversionError)
+			{
+				PluginConsole.WriteLine("A conversion error occurred during this command and as such the color value was not assigned to the settings file", this);
+			}
+			else
+			{
+				PluginSettings.Instance.SetSetting("dash_wait_color", string.Join(" ", input));
+			}
 		}
 	}
 	#endregion Console Commands
 
 	#region Private Methods
-	bool ResolveColor(string[] input)
+	private class MyColor
 	{
-		bool resolved = true;
-		float redValue = 0.0f, greenValue = 0.0f, blueValue = 0.0f;
+		public Color color { get; set; }
+		public bool HadConversionError { get; set; }
 
-		if (input.Length >= 1 && !float.TryParse(input[0], out redValue))
+		public MyColor()
 		{
-			Console.WriteLine("Invalid Red Value, must be between 0.0 and 1.0", this);
-			resolved = false;
+			HadConversionError = false;
 		}
-		else if (input.Length >= 2 && !float.TryParse(input[1], out greenValue))
+	}
+
+
+	//Convert a 3 element string array into a color, if not a 3 element array supplied then use default black as color
+	private MyColor StringArrayToColor(string[] input)
+	{
+		MyColor result = new MyColor();
+		float[] colorValues = new float[3] { 0, 0, 0 };
+
+		if (input.Length < 3)
 		{
-			Console.WriteLine("Invalid Green Value, must be between 0.0 and 1.0", this);
-			resolved = false;
+			PluginConsole.WriteLine("Supplied string color array must be at least 3 elements in length, using '0, 0, 0' as default", this);
 		}
-		else if (input.Length >= 3 && !float.TryParse(input[2], out blueValue))
+		else
 		{
-			Console.WriteLine("Invalid Blue Value, must be between 0.0 and 1.0", this);
-			resolved = false;
+			float value;
+
+			for (int i = 0; i < 3; i++)
+			{
+				if (float.TryParse(input[i], out value))
+				{
+					colorValues[i] = value;
+				}
+				else
+				{
+					result.HadConversionError = true;
+					PluginConsole.WriteLine("Error converting '" + input[i] + "' into a float value, using default value of '0' instead", this);
+				}
+			}
 		}
 
-		if (resolved)
-		{
-			_selectedColor = new Color(redValue, greenValue, blueValue);
-		}
+		result.color = new Color(colorValues[0], colorValues[1], colorValues[2]);
 
-		return resolved;
+		return result;
 	}
 	#endregion Private Methods
 
@@ -102,39 +178,21 @@ public class DashMeterUpgrade : DeadCorePlugin
 		enabled = false;
 
 		//Register Console Commands
-		PluginConsole.RegisterConsoleCommand("set_dash_charged_color", Cmd_SetChargedColor, "Set the Charged color of the Dash interface on the gun, eg: 'set_dash_charged_color 1 0 0'", this);
-		PluginConsole.RegisterConsoleCommand("set_dash_wait_color", Cmd_SetWaitColor, "Set the Waiting color of the Dash interface on the gun", this);
-		PluginConsole.RegisterConsoleCommand("set_dash_punish_color", Cmd_SetPunishmentColor, "Set the Punishment color of the Dash interface on the gun", this);
-
-		float cR, cG, cB;
-		float wR, wG, wB;
-		float pR, pG, pB;
+		PluginConsole.RegisterConsoleCommand("dash_charged_color", Cmd_SetChargedColor, "Set the Charged color of the Dash interface on the gun, eg: 'set_dash_charged_color 1 0 0'", this);
+		PluginConsole.RegisterConsoleCommand("dash_wait_color", Cmd_SetWaitColor, "Set the Waiting color of the Dash interface on the gun", this);
+		PluginConsole.RegisterConsoleCommand("dash_punish_color", Cmd_SetPunishmentColor, "Set the Punishment color of the Dash interface on the gun", this);
 
 		//Check Settings file for Colors
-		cR = float.Parse(PluginSettings.Instance.GetSetting("dash_charged_r", 0f));
-		cG = float.Parse(PluginSettings.Instance.GetSetting("dash_charged_g", 1f));
-		cB = float.Parse(PluginSettings.Instance.GetSetting("dash_charged_b", 0f));
-
-		wR = float.Parse(PluginSettings.Instance.GetSetting("dash_wait_r", 0f));
-		wG = float.Parse(PluginSettings.Instance.GetSetting("dash_wait_g", 0.5f));
-		wB = float.Parse(PluginSettings.Instance.GetSetting("dash_wait_b", 1f));
-
-		pR = float.Parse(PluginSettings.Instance.GetSetting("dash_punish_r", 1f));
-		pG = float.Parse(PluginSettings.Instance.GetSetting("dash_punish_g", 0f));
-		pB = float.Parse(PluginSettings.Instance.GetSetting("dash_punish_b", 0f));
-
-		//Assign colors to persistent colors
-		_chargedColor = new Color(cR, cG, cB);
-		_waitColor = new Color(wR, wG, wB);
-		_punishmentColor = new Color(pR, pG, pB);
+		_chargedColor = StringArrayToColor(PluginSettings.Instance.GetSetting("dash_charged_color", "0 1 0").Split(' ')).color;
+		_waitColor = StringArrayToColor(PluginSettings.Instance.GetSetting("dash_wait_color", "0 0.5 1").Split(' ')).color;
+		_punishColor = StringArrayToColor(PluginSettings.Instance.GetSetting("dash_punish_color", "1 0 0").Split(' ')).color;
 	}
 
 	private void OnLevelWasLoaded(int level)
 	{
+		//Only enable this plugin when we are in a playable level
 		if (DeadCoreLevels.PlayableLevelIDs.ContainsKey(level))
 		{
-			_battery = Android.Instance.GetComponent<AndroidBattery>();
-			_dash = Android.Instance.GetComponent<AndroidDash>();
 			enabled = true;
 		}
 		else
@@ -145,17 +203,21 @@ public class DashMeterUpgrade : DeadCorePlugin
 
 	private void LateUpdate()
 	{
-		if (_battery.CurrentBattery < _dash._minBatteryToDash && _battery.CanUseBattery)
+		//If we have a battery object then we will also have a dash object
+		if (_battery != null)
 		{
-			_battery._gaugeRenderer.material.color = _waitColor;
-		}
-		else if (_battery.CanUseBattery)
-		{
-			_battery._gaugeRenderer.material.color = _chargedColor;
-		}
-		else if (!_battery.CanUseBattery)
-		{
-			_battery._gaugeRenderer.material.color = _punishmentColor;
+			if (_battery.CurrentBattery < _dash._minBatteryToDash && _battery.CanUseBattery)
+			{
+				_battery._gaugeRenderer.material.color = _waitColor;
+			}
+			else if (_battery.CanUseBattery)
+			{
+				_battery._gaugeRenderer.material.color = _chargedColor;
+			}
+			else if (!_battery.CanUseBattery)
+			{
+				_battery._gaugeRenderer.material.color = _punishColor;
+			}
 		}
 	}
 	#endregion Unity Methods
