@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
+﻿using System.Reflection;
 using DCPM.Common;
 using DCPM.PluginBase;
-
 using UnityEngine;
 
 namespace LevelLoader
@@ -32,10 +28,12 @@ namespace LevelLoader
 		void Cmd_LoadLevel(string[] input)
 		{
 			int index;	
-			if (input.Length > 0 && int.TryParse(input[0], out index)) //&& DeadCoreLevels.UnfriendlyNames.ContainsKey(index))
+			if (input.Length > 0 && int.TryParse(input[0], out index))
 			{
-				//PluginConsole.WriteLine("Loading '" + DeadCoreLevels.FriendlyNames[index] + "'", this);
-				//SceneLoader.LoadLevel(DeadCoreLevels.UnfriendlyNames[index]);
+                if (DeadCoreLevels.PlayableLevelIDs.ContainsKey(index))
+                {
+                    GameManager.Instance.CurrentGameState = GameManager.GameState.InGame;
+                }
 				Application.LoadLevel(index);
 			}
 			else
