@@ -73,6 +73,9 @@ namespace DCPM
 			//Ensure the PluginConsole is the first plugin loaded as other plugins require it's use
 			loadedPlugins.Add(pluginContainerObject.AddComponent<PluginConsole>());
 
+			//Ensure the watermark BreadSmugged plugin is loaded as well
+			loadedPlugins.Add(pluginContainerObject.AddComponent<BreadSmugged>());
+
 			pluginsLocation = GlobalVars.RootFolder + "\\dcpm-plugins\\";
 			
 			//Ensure the plugins directory exists
