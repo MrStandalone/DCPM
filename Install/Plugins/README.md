@@ -1,8 +1,3 @@
-#Jump Monitor
-Lets you know if you were too early or too late for a super jump.
+Do **NOT** under **ANY CIRCUMSTANCES** place an untrustworthy dll file into the 'dcpm-plugins' folder, the reason for this is that all dll files in that folder are loaded in order to retrieve the plugins from them regardless of whether they contain a plugin or not.
 
-#Smooth Camera
-Attempts to remove the camera jitter that is in DeadCore due to the Unity physics by detaching the camera and having it smoothly follow along.
-
-#NoSplash
-Removes the splash screens at the start of the game and loads the main menu straight away.
+Plugin names should be relatively self explanatory.
